@@ -1,0 +1,4 @@
+<network>
+	<name>internal-br24</name>
+	<bridge name='internal-br24' stp='on' delay='0' />
+</network>

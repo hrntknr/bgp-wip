@@ -1,0 +1,4 @@
+<network>
+	<name>internal-br13</name>
+	<bridge name='internal-br13' stp='on' delay='0' />
+</network>

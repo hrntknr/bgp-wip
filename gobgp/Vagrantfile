@@ -1,0 +1,109 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/xenial64"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = false
+    vb.memory = "1024"
+  end
+  config.vm.define "rtr1" do |rtr|
+    rtr.vm.network "private_network", ip: "10.0.12.10", virtualbox__intnet: "net12"
+    rtr.vm.network "private_network", ip: "10.0.13.10", virtualbox__intnet: "net13"
+    rtr.vm.network "private_network", ip: "10.0.15.10", virtualbox__intnet: "net15"
+    optional = <<-SHELL
+    gobgp global rib add 10.0.12.10/32
+    gobgp global rib add 10.0.13.10/32
+    gobgp global rib add 10.0.15.10/32
+    gobgp global rib add 10.0.10.0/24
+    SHELL
+    ShellConf(rtr, 'rtr1', optional)
+  end
+  config.vm.define "rtr2" do |rtr|
+    rtr.vm.network "private_network", ip: "10.0.12.20", virtualbox__intnet: "net12"
+    rtr.vm.network "private_network", ip: "10.0.24.20", virtualbox__intnet: "net24"
+    optional = <<-SHELL
+    gobgp global rib add 10.0.12.20/32
+    gobgp global rib add 10.0.24.20/32
+    gobgp global rib add 10.0.20.0/24
+    SHELL
+    ShellConf(rtr, 'rtr2', optional)
+  end
+  config.vm.define "rtr3" do |rtr|
+    rtr.vm.network "private_network", ip: "10.0.13.30", virtualbox__intnet: "net13"
+    rtr.vm.network "private_network", ip: "10.0.34.30", virtualbox__intnet: "net34"
+    optional = <<-SHELL
+    gobgp global rib add 10.0.13.30/32
+    gobgp global rib add 10.0.34.30/32
+    gobgp global rib add 10.0.30.0/24
+    #
+    gobgp global rib add 10.0.40.0/24
+    SHELL
+    ShellConf(rtr, 'rtr3', optional)
+  end
+  config.vm.define "rtr4" do |rtr|
+    rtr.vm.network "private_network", ip: "10.0.24.40", virtualbox__intnet: "net24"
+    rtr.vm.network "private_network", ip: "10.0.34.40", virtualbox__intnet: "net34"
+    optional = <<-SHELL
+    gobgp global rib add 10.0.24.40/32
+    gobgp global rib add 10.0.34.40/32
+    gobgp global rib add 10.0.40.0/24
+    #
+    gobgp global rib add 10.0.50.1/32
+    SHELL
+    ShellConf(rtr, 'rtr4', optional)
+  end
+  config.vm.define "rtr5" do |rtr|
+    rtr.vm.network "private_network", ip: "10.0.15.50", virtualbox__intnet: "net15"
+    optional = <<-SHELL
+    gobgp global rib add 10.0.15.50/32
+    gobgp global rib add 10.0.50.0/24
+    #
+    gobgp global rib -a ipv4-flowspec add match source 10.0.15.10/32 then discard
+    SHELL
+    ShellConf(rtr, 'rtr5', optional)
+  end
+end
+
+def ShellConf(config, name, optional)
+  config.vm.provision "shell", inline: <<-SHELL
+  apt-get update
+  apt-get install -y wget
+
+  # Install FRR
+  wget -q https://github.com/FRRouting/frr/releases/download/frr-3.0.3/frr_3.0.3-1_ubuntu16.04.1_amd64.deb
+  apt-get install -y ./frr_3.0.3-1_ubuntu16.04.1_amd64.deb
+  rm ./frr_3.0.3-1_ubuntu16.04.1_amd64.deb
+  cp /vagrant/daemons.frr /etc/frr/daemons
+  systemctl restart frr.service
+
+  # Install Quagga
+  # apt-get install -y quagga
+  # cp /vagrant/daemons.quagga /etc/quagga/daemons
+  # systemctl restart quagga.service
+
+  # Install gobgp
+  wget -q https://github.com/osrg/gobgp/releases/download/v1.33/gobgp_1.33_linux_amd64.tar.gz
+  tar -zxf gobgp_1.33_linux_amd64.tar.gz
+  mv gobgpd /usr/local/bin
+  mv gobgp /usr/local/bin
+  rm ./gobgp_1.33_linux_amd64.tar.gz
+  rm ./LICENSE
+  rm ./README.md
+  cp /vagrant/gobgpd.service /etc/systemd/system
+  cp /vagrant/gobgpd-#{name}.yml /etc/default/gobgpd.yml
+  systemctl daemon-reload
+  systemctl enable gobgpd.service
+  systemctl start gobgpd.service
+
+  /sbin/sysctl -w net.ipv4.conf.all.forwarding=1
+  # /sbin/sysctl -w net.ipv6.conf.all.forwarding=1
+
+  # echo mpls_router >> /etc/modules-load.d/modules.conf
+  # echo mpls_iptunnel >> /etc/modules-load.d/modules.conf
+  # /sbin/sysctl -w net.mpls.conf.eth0.input=1
+  # /sbin/sysctl -w net.mpls.platform_labels=100000
+
+  #{optional}
+  SHELL
+end

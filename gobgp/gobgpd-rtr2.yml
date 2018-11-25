@@ -1,0 +1,27 @@
+global:
+  config:
+    as: 65002
+    router-id: 10.0.0.20
+neighbors:
+  - config:
+      neighbor-address: 10.0.12.10
+      peer-as: 65001
+    afi-safis:
+      - config:
+          afi-safi-name: ipv4-unicast
+      - config:
+          afi-safi-name: ipv4-flowspec
+  - config:
+      neighbor-address: 10.0.24.40
+      peer-as: 65004
+    afi-safis:
+      - config:
+          afi-safi-name: ipv4-unicast
+      - config:
+          afi-safi-name: ipv4-flowspec
+zebra:
+  config:
+    enabled: true
+    url: "unix:/var/run/frr/zserv.api"
+    redistribute-route-type-list:
+      - connect

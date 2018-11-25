@@ -1,0 +1,125 @@
+interfaces {
+    ethernet eth0 {
+        address 10.127.0.3/24
+        duplex auto
+        hw-id 52:54:00:e1:2f:8a
+        smp_affinity auto
+        speed auto
+    }
+    ethernet eth1 {
+        address 10.127.13.3/24
+        duplex auto
+        hw-id 52:54:00:bc:7b:d6
+        smp_affinity auto
+        speed auto
+    }
+    ethernet eth2 {
+        address 10.127.34.3/24
+        duplex auto
+        hw-id 52:54:00:0a:c7:cf
+        smp_affinity auto
+        speed auto
+    }
+    loopback lo {
+    }
+}
+protocols {
+    bgp 3 {
+        neighbor 10.127.13.1 {
+            remote-as 1
+            soft-reconfiguration {
+                inbound
+            }
+            timers {
+                connect 1
+                holdtime 4
+                keepalive 1
+            }
+        }
+        neighbor 10.127.34.4 {
+            remote-as 4
+            soft-reconfiguration {
+                inbound
+            }
+            timers {
+                connect 1
+                holdtime 4
+                keepalive 1
+            }
+        }
+        network 10.127.13.3/32 {
+        }
+        network 10.127.34.3/32 {
+        }
+        parameters {
+            router-id 10.127.0.3
+        }
+        redistribute {
+            connected {
+                metric 1
+            }
+            static {
+                metric 1
+            }
+        }
+    }
+}
+service {
+    ssh {
+        port 22
+    }
+}
+system {
+    config-management {
+        commit-revisions 20
+    }
+    console {
+        device ttyS0 {
+            speed 9600
+        }
+    }
+    host-name vy3
+    login {
+        user vyos {
+            authentication {
+                encrypted-password $6$F99OIrzDF/1$4mSXbapL7La0bGjcPJqg23RCnqLWQO3P5WKd8zQFtRRMpT7KMGSCS02U1QxNd5CfJipLg3DLaC9Xke7lYikQI0
+                plaintext-password ""
+            }
+            level admin
+        }
+    }
+    ntp {
+        server 0.pool.ntp.org {
+        }
+        server 1.pool.ntp.org {
+        }
+        server 2.pool.ntp.org {
+        }
+    }
+    package {
+        auto-sync 1
+        repository community {
+            components main
+            distribution helium
+            password ""
+            url http://packages.vyos.net/vyos
+            username ""
+        }
+    }
+    syslog {
+        global {
+            facility all {
+                level notice
+            }
+            facility protocols {
+                level debug
+            }
+        }
+    }
+    time-zone UTC
+}
+
+
+/* Warning: Do not remove the following line. */
+/* === vyatta-config-version: "cluster@1:config-management@1:conntrack-sync@1:conntrack@1:cron@1:dhcp-relay@1:dhcp-server@4:firewall@5:ipsec@4:nat@4:qos@1:quagga@2:system@6:vrrp@1:wanloadbalance@3:webgui@1:webproxy@1:zone-policy@1" === */
+/* Release version: VyOS 1.1.8 */
