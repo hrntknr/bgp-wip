@@ -1,6 +1,8 @@
 #!/bin/bash
-# rtr1> gobgp global rib
+
 gobgp global rib
+
+# rtr1> gobgp global rib
 #    Network              Next Hop             AS_PATH              Age        Attrs
 # *> 10.0.2.0/24          0.0.0.0                                   00:12:32   [{Origin: i} {Med: 0}]
 # *  10.0.2.0/24          10.0.12.20           65002                00:10:10   [{Origin: i} {Med: 0}]
@@ -36,9 +38,8 @@ gobgp global rib
 # *> 10.0.50.1/32         10.0.12.20           65002 65004          00:05:43   [{Origin: ?} {Med: 0}]
 # *  10.0.50.1/32         10.0.13.30           65003 65004          00:05:43   [{Origin: ?} {Med: 0}]
 
-
 gobgp global rib -a ipv4-flowspec
+# rtr1> gobgp global rib -a ipv4-flowspec
 #    Network                 Next Hop             AS_PATH              Age        Attrs
 # *> [source: 10.0.12.20/32] fictitious           65005                00:06:29   [{Origin: ?} {Extcomms: [discard]}]
 # *> [source: 10.0.15.10/32] fictitious           65005                00:06:29   [{Origin: ?} {Extcomms: [discard]}]
-
