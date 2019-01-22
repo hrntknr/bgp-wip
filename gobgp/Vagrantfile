@@ -1,141 +1,100 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+
+$install_ctrl = <<-SHELL
+apt-get update
+apt-get install -y wget
+
+# Install FRR
+wget -q https://github.com/FRRouting/frr/releases/download/frr-6.0.2/frr_6.0.2-0.ubuntu18.04.1_amd64.deb
+apt-get install -y ./frr_6.0.2-0.ubuntu18.04.1_amd64.deb
+rm ./frr_6.0.2-0.ubuntu18.04.1_amd64.deb
+sed -i 's/zebra=no/zebra=yes/g' /etc/frr/daemons
+/vagrant/update_ctrl.sh
+SHELL
+
+$install_rtr = <<-SHELL
+apt-get update
+apt-get install -y wget
+
+# Install gobgp
+wget -q https://github.com/osrg/gobgp/releases/download/v1.33/gobgp_1.33_linux_amd64.tar.gz
+tar -zxf gobgp_1.33_linux_amd64.tar.gz
+mv gobgpd /usr/local/bin
+mv gobgp /usr/local/bin
+rm ./gobgp_1.33_linux_amd64.tar.gz
+rm ./LICENSE
+rm ./README.md
+cp /vagrant/gobgpd.service /etc/systemd/system
+cp /vagrant/gobgpd-$HOSTNAME.yml /etc/default/gobgpd.yml
+systemctl daemon-reload
+systemctl enable gobgpd.service
+/vagrant/update_rtr.sh
+SHELL
+
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/xenial64"
 
   config.vm.provider "virtualbox" do |vb|
     vb.gui = false
-    vb.memory = 4096
-    vb.cpus = 2
+    vb.memory = 1024
+    vb.cpus = 1
     vb.customize ["modifyvm", :id, "--audio", "none"]
   end
   config.vm.define "rtr1" do |rtr|
+    config.vm.hostname = "rtr1"
     rtr.vm.network "private_network", ip: "10.1.0.10"
+    rtr.vm.network "private_network", ip: "10.0.10.10", virtualbox__intnet: "internal1"
     rtr.vm.network "private_network", ip: "10.0.12.10", virtualbox__intnet: "net12"
     rtr.vm.network "private_network", ip: "10.0.13.10", virtualbox__intnet: "net13"
-    rtr.vm.network "private_network", ip: "10.0.15.10", virtualbox__intnet: "net15"
-    optional = <<-SHELL
-    gobgp global rib add 10.0.12.10/32
-    gobgp global rib add 10.0.13.10/32
-    gobgp global rib add 10.0.15.10/32
-    gobgp global rib add 10.0.10.0/24
-    SHELL
-    ShellConf(rtr, 'rtr1', optional)
+    config.vm.provision "shell", inline: $install_rtr
+  end
+  config.vm.define "ctrl1" do |ctrl|
+    config.vm.hostname = "ctrl1"
+    ctrl.vm.network "private_network", ip: "10.1.0.11"
+    ctrl.vm.network "private_network", ip: "10.0.10.11", virtualbox__intnet: "internal1"
+    config.vm.provision "shell", inline: $install_ctrl
   end
   config.vm.define "rtr2" do |rtr|
+    config.vm.hostname = "rtr2"
     rtr.vm.network "private_network", ip: "10.1.0.20"
+    rtr.vm.network "private_network", ip: "10.0.20.20", virtualbox__intnet: "internal2"
     rtr.vm.network "private_network", ip: "10.0.12.20", virtualbox__intnet: "net12"
     rtr.vm.network "private_network", ip: "10.0.24.20", virtualbox__intnet: "net24"
-    optional = <<-SHELL
-    gobgp global rib add 10.0.12.20/32
-    gobgp global rib add 10.0.24.20/32
-    gobgp global rib add 10.0.20.0/24
-    SHELL
-    ShellConf(rtr, 'rtr2', optional)
+    config.vm.provision "shell", inline: $install_rtr
+  end
+  config.vm.define "ctrl2" do |ctrl|
+    config.vm.hostname = "ctrl2"
+    ctrl.vm.network "private_network", ip: "10.1.0.21"
+    ctrl.vm.network "private_network", ip: "10.0.20.21", virtualbox__intnet: "internal2"
+    config.vm.provision "shell", inline: $install_ctrl
   end
   config.vm.define "rtr3" do |rtr|
+    config.vm.hostname = "rtr3"
     rtr.vm.network "private_network", ip: "10.1.0.30"
+    rtr.vm.network "private_network", ip: "10.0.30.30", virtualbox__intnet: "internal3"
     rtr.vm.network "private_network", ip: "10.0.13.30", virtualbox__intnet: "net13"
     rtr.vm.network "private_network", ip: "10.0.34.30", virtualbox__intnet: "net34"
-    optional = <<-SHELL
-    gobgp global rib add 10.0.13.30/32
-    gobgp global rib add 10.0.34.30/32
-    gobgp global rib add 10.0.30.0/24
-    #
-    gobgp global rib add 10.0.40.0/24
-    SHELL
-    ShellConf(rtr, 'rtr3', optional)
+    config.vm.provision "shell", inline: $install_rtr
+  end
+  config.vm.define "ctrl3" do |ctrl|
+    config.vm.hostname = "ctrl3"
+    ctrl.vm.network "private_network", ip: "10.1.0.31"
+    ctrl.vm.network "private_network", ip: "10.0.30.31", virtualbox__intnet: "internal3"
+    config.vm.provision "shell", inline: $install_ctrl
   end
   config.vm.define "rtr4" do |rtr|
+    config.vm.hostname = "rtr4"
     rtr.vm.network "private_network", ip: "10.1.0.40"
+    rtr.vm.network "private_network", ip: "10.0.40.40", virtualbox__intnet: "internal4"
     rtr.vm.network "private_network", ip: "10.0.24.40", virtualbox__intnet: "net24"
     rtr.vm.network "private_network", ip: "10.0.34.40", virtualbox__intnet: "net34"
-    optional = <<-SHELL
-    gobgp global rib add 10.0.24.40/32
-    gobgp global rib add 10.0.34.40/32
-    gobgp global rib add 10.0.40.0/24
-    #
-    gobgp global rib add 10.0.50.1/32
-    SHELL
-    ShellConf(rtr, 'rtr4', optional)
+    config.vm.provision "shell", inline: $install_rtr
   end
-  config.vm.define "rtr5" do |rtr|
-    rtr.vm.network "private_network", ip: "10.1.0.50"
-    rtr.vm.network "private_network", ip: "10.0.15.50", virtualbox__intnet: "net15"
-    optional = <<-SHELL
-    gobgp global rib add 10.0.15.50/32
-    gobgp global rib add 10.0.50.0/24
-    #
-    gobgp global rib -a ipv4-flowspec add match source 10.0.15.10/32 then discard
-    gobgp global rib -a ipv4-flowspec add match source 10.0.12.20/32 then discard
-    SHELL
-    ShellConf(rtr, 'rtr5', optional)
+  config.vm.define "ctrl4" do |ctrl|
+    config.vm.hostname = "ctrl4"
+    ctrl.vm.network "private_network", ip: "10.1.0.41"
+    ctrl.vm.network "private_network", ip: "10.0.40.41", virtualbox__intnet: "internal4"
+    config.vm.provision "shell", inline: $install_ctrl
   end
-  # config.vm.define "rpki" do |rpki|
-  #   rpki.vm.network "private_network", ip: "10.1.0.2"
-  #   rpki.vm.provision "shell", inline: <<-SHELL
-  #   apt-get update
-  #   apt-get install -y wget
-
-  #   wget -q -O /etc/apt/trusted.gpg.d/rpki.gpg https://download.rpki.net/APTng/apt-gpg-key.gpg
-  #   wget -q -O /etc/apt/sources.list.d/rpki.list https://download.rpki.net/APTng/rpki.xenial.list
-  #   apt-get update
-  #   apt-get install -y rpki-rp rpki-ca
-
-  #   cp /vagrant/rsyncd.conf /etc/rsyncd.conf
-  #   cp /vagrant/rsync /etc/xinetd.d/rsync
-  #   systemctl restart xinetd
-
-  #   # rpkic create_identity rpki
-  #   # rsync rpki.identity.xml /usr/share/rpki/publication
-
-  #   rpkic initialize
-  #   rpkic configure_root
-
-  #   rpki-manage createsuperuser --noinput --username rpki --email email@example.com
-  #   SHELL
-  # end
-end
-
-def ShellConf(config, name, optional)
-  config.vm.provision "shell", inline: <<-SHELL
-  apt-get update
-  apt-get install -y wget
-
-  # Install FRR
-  wget -q https://github.com/FRRouting/frr/releases/download/frr-3.0.3/frr_3.0.3-1_ubuntu16.04.1_amd64.deb
-  apt-get install -y ./frr_3.0.3-1_ubuntu16.04.1_amd64.deb
-  rm ./frr_3.0.3-1_ubuntu16.04.1_amd64.deb
-  cp /vagrant/daemons.frr /etc/frr/daemons
-  systemctl restart frr.service
-
-  # Install Quagga
-  # apt-get install -y quagga
-  # cp /vagrant/daemons.quagga /etc/quagga/daemons
-  # systemctl restart quagga.service
-
-  # Install gobgp
-  wget -q https://github.com/osrg/gobgp/releases/download/v1.33/gobgp_1.33_linux_amd64.tar.gz
-  tar -zxf gobgp_1.33_linux_amd64.tar.gz
-  mv gobgpd /usr/local/bin
-  mv gobgp /usr/local/bin
-  rm ./gobgp_1.33_linux_amd64.tar.gz
-  rm ./LICENSE
-  rm ./README.md
-  cp /vagrant/gobgpd.service /etc/systemd/system
-  cp /vagrant/gobgpd-#{name}.yml /etc/default/gobgpd.yml
-  systemctl daemon-reload
-  systemctl enable gobgpd.service
-  systemctl start gobgpd.service
-
-  /sbin/sysctl -w net.ipv4.conf.all.forwarding=1
-  # /sbin/sysctl -w net.ipv6.conf.all.forwarding=1
-
-  # echo mpls_router >> /etc/modules-load.d/modules.conf
-  # echo mpls_iptunnel >> /etc/modules-load.d/modules.conf
-  # /sbin/sysctl -w net.mpls.conf.eth0.input=1
-  # /sbin/sysctl -w net.mpls.platform_labels=100000
-
-  #{optional}
-  SHELL
 end
