@@ -1,19 +1,24 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-$install_ctrl = <<-SHELL
+$install_rtr = <<-SHELL
 apt-get update
 apt-get install -y wget
 
 # Install FRR
-wget -q https://github.com/FRRouting/frr/releases/download/frr-6.0.2/frr_6.0.2-0.ubuntu18.04.1_amd64.deb
-apt-get install -y ./frr_6.0.2-0.ubuntu18.04.1_amd64.deb
-rm ./frr_6.0.2-0.ubuntu18.04.1_amd64.deb
+# wget -q https://github.com/FRRouting/frr/releases/download/frr-6.0.2/frr_6.0.2-0.ubuntu18.04.1_amd64.deb
+# apt-get install -y ./frr_6.0.2-0.ubuntu18.04.1_amd64.deb
+# rm ./frr_6.0.2-0.ubuntu18.04.1_amd64.deb
+wget -q https://github.com/FRRouting/frr/releases/download/frr-5.0.2/frr_5.0.2-1.ubuntu18.04+1_amd64.deb
+apt-get install -y ./frr_5.0.2-1.ubuntu18.04+1_amd64.deb
+rm ./frr_5.0.2-1.ubuntu18.04+1_amd64.deb
 sed -i 's/zebra=no/zebra=yes/g' /etc/frr/daemons
-/vagrant/update_ctrl.sh
+sed -i 's/bgpd=no/bgpd=yes/g' /etc/frr/daemons
+systemctl restart frr
+/vagrant/update_rtr.sh
 SHELL
 
-$install_rtr = <<-SHELL
+$install_ctrl = <<-SHELL
 apt-get update
 apt-get install -y wget
 
@@ -26,14 +31,14 @@ rm ./gobgp_1.33_linux_amd64.tar.gz
 rm ./LICENSE
 rm ./README.md
 cp /vagrant/gobgpd.service /etc/systemd/system
-cp /vagrant/gobgpd-$HOSTNAME.yml /etc/default/gobgpd.yml
 systemctl daemon-reload
 systemctl enable gobgpd.service
-/vagrant/update_rtr.sh
+systemctl start gobgpd.service
+/vagrant/update_ctrl.sh
 SHELL
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/xenial64"
+  config.vm.box = "ubuntu/bionic64"
 
   config.vm.provider "virtualbox" do |vb|
     vb.gui = false
@@ -42,59 +47,59 @@ Vagrant.configure("2") do |config|
     vb.customize ["modifyvm", :id, "--audio", "none"]
   end
   config.vm.define "rtr1" do |rtr|
-    config.vm.hostname = "rtr1"
+    rtr.vm.hostname = "rtr1"
     rtr.vm.network "private_network", ip: "10.1.0.10"
     rtr.vm.network "private_network", ip: "10.0.10.10", virtualbox__intnet: "internal1"
     rtr.vm.network "private_network", ip: "10.0.12.10", virtualbox__intnet: "net12"
     rtr.vm.network "private_network", ip: "10.0.13.10", virtualbox__intnet: "net13"
-    config.vm.provision "shell", inline: $install_rtr
+    rtr.vm.provision "shell", inline: $install_rtr
   end
   config.vm.define "ctrl1" do |ctrl|
-    config.vm.hostname = "ctrl1"
+    ctrl.vm.hostname = "ctrl1"
     ctrl.vm.network "private_network", ip: "10.1.0.11"
     ctrl.vm.network "private_network", ip: "10.0.10.11", virtualbox__intnet: "internal1"
-    config.vm.provision "shell", inline: $install_ctrl
+    ctrl.vm.provision "shell", inline: $install_ctrl
   end
   config.vm.define "rtr2" do |rtr|
-    config.vm.hostname = "rtr2"
+    rtr.vm.hostname = "rtr2"
     rtr.vm.network "private_network", ip: "10.1.0.20"
-    rtr.vm.network "private_network", ip: "10.0.20.20", virtualbox__intnet: "internal2"
+    rtr.vm.network "private_network", ip: "10.0.20.10", virtualbox__intnet: "internal2"
     rtr.vm.network "private_network", ip: "10.0.12.20", virtualbox__intnet: "net12"
     rtr.vm.network "private_network", ip: "10.0.24.20", virtualbox__intnet: "net24"
-    config.vm.provision "shell", inline: $install_rtr
+    rtr.vm.provision "shell", inline: $install_rtr
   end
   config.vm.define "ctrl2" do |ctrl|
-    config.vm.hostname = "ctrl2"
+    ctrl.vm.hostname = "ctrl2"
     ctrl.vm.network "private_network", ip: "10.1.0.21"
-    ctrl.vm.network "private_network", ip: "10.0.20.21", virtualbox__intnet: "internal2"
-    config.vm.provision "shell", inline: $install_ctrl
+    ctrl.vm.network "private_network", ip: "10.0.20.11", virtualbox__intnet: "internal2"
+    ctrl.vm.provision "shell", inline: $install_ctrl
   end
   config.vm.define "rtr3" do |rtr|
-    config.vm.hostname = "rtr3"
+    rtr.vm.hostname = "rtr3"
     rtr.vm.network "private_network", ip: "10.1.0.30"
-    rtr.vm.network "private_network", ip: "10.0.30.30", virtualbox__intnet: "internal3"
+    rtr.vm.network "private_network", ip: "10.0.30.10", virtualbox__intnet: "internal3"
     rtr.vm.network "private_network", ip: "10.0.13.30", virtualbox__intnet: "net13"
     rtr.vm.network "private_network", ip: "10.0.34.30", virtualbox__intnet: "net34"
-    config.vm.provision "shell", inline: $install_rtr
+    rtr.vm.provision "shell", inline: $install_rtr
   end
   config.vm.define "ctrl3" do |ctrl|
-    config.vm.hostname = "ctrl3"
+    ctrl.vm.hostname = "ctrl3"
     ctrl.vm.network "private_network", ip: "10.1.0.31"
-    ctrl.vm.network "private_network", ip: "10.0.30.31", virtualbox__intnet: "internal3"
-    config.vm.provision "shell", inline: $install_ctrl
+    ctrl.vm.network "private_network", ip: "10.0.30.11", virtualbox__intnet: "internal3"
+    ctrl.vm.provision "shell", inline: $install_ctrl
   end
   config.vm.define "rtr4" do |rtr|
-    config.vm.hostname = "rtr4"
+    rtr.vm.hostname = "rtr4"
     rtr.vm.network "private_network", ip: "10.1.0.40"
-    rtr.vm.network "private_network", ip: "10.0.40.40", virtualbox__intnet: "internal4"
+    rtr.vm.network "private_network", ip: "10.0.40.10", virtualbox__intnet: "internal4"
     rtr.vm.network "private_network", ip: "10.0.24.40", virtualbox__intnet: "net24"
     rtr.vm.network "private_network", ip: "10.0.34.40", virtualbox__intnet: "net34"
-    config.vm.provision "shell", inline: $install_rtr
+    rtr.vm.provision "shell", inline: $install_rtr
   end
   config.vm.define "ctrl4" do |ctrl|
-    config.vm.hostname = "ctrl4"
+    ctrl.vm.hostname = "ctrl4"
     ctrl.vm.network "private_network", ip: "10.1.0.41"
-    ctrl.vm.network "private_network", ip: "10.0.40.41", virtualbox__intnet: "internal4"
-    config.vm.provision "shell", inline: $install_ctrl
+    ctrl.vm.network "private_network", ip: "10.0.40.11", virtualbox__intnet: "internal4"
+    ctrl.vm.provision "shell", inline: $install_ctrl
   end
 end

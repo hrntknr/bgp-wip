@@ -1,0 +1,20 @@
+global:
+  config:
+    as: 65003
+    router-id: 10.1.0.31
+    local-address-list:
+      - 10.0.30.11
+neighbors:
+  - config:
+      neighbor-address: 10.0.30.10
+      peer-as: 65003
+    transport:
+      config:
+        local-address: 10.0.30.11
+        passive-mode: true
+        ttl: 255
+    afi-safis:
+      - config:
+          afi-safi-name: ipv4-unicast
+      - config:
+          afi-safi-name: ipv4-flowspec
