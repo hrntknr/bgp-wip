@@ -7,3 +7,6 @@ for i in {1..4}; do
   vagrant ssh rtr$i -c '/vagrant/vtysh-$HOSTNAME-2.sh'
   sleep 3
 done
+for i in {1..4}; do
+  vagrant ssh rtr$i -c "sudo cp /etc/frr/frr.conf /vagrant/frr-rtr$i.conf"
+done

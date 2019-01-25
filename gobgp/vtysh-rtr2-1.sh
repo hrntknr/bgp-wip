@@ -13,6 +13,7 @@ address-family ipv4 unicast
 network 10.0.20.0/24
 network 10.0.12.20/32
 network 10.0.24.20/32
+neighbor 10.0.20.11 next-hop-self
 exit-address-family
 exit
 exit
