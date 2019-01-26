@@ -5,6 +5,8 @@ Description=gobgpd
 ExecStart = /usr/local/bin/gobgpd -t yaml -f /etc/default/gobgpd.yml
 Restart = always
 Type = simple
+StandardOutput = syslog
+StandardError = syslog
 
 [Install]
 WantedBy=network-online.target

@@ -6,16 +6,16 @@ apt-get update
 apt-get install -y wget
 
 # Install FRR
-# wget -q https://github.com/FRRouting/frr/releases/download/frr-6.0.2/frr_6.0.2-0.ubuntu18.04.1_amd64.deb
-# apt-get install -y ./frr_6.0.2-0.ubuntu18.04.1_amd64.deb
-# rm ./frr_6.0.2-0.ubuntu18.04.1_amd64.deb
-wget -q https://github.com/FRRouting/frr/releases/download/frr-5.0.2/frr_5.0.2-1.ubuntu18.04+1_amd64.deb
-apt-get install -y ./frr_5.0.2-1.ubuntu18.04+1_amd64.deb
-rm ./frr_5.0.2-1.ubuntu18.04+1_amd64.deb
+wget -q https://github.com/FRRouting/frr/releases/download/frr-6.0.2/frr_6.0.2-0.deb9u1_amd64.deb
+apt-get install -y ./frr_6.0.2-0.deb9u1_amd64.deb
+rm ./frr_6.0.2-0.deb9u1_amd64.deb
+# wget -q https://github.com/FRRouting/frr/releases/download/frr-5.0.2/frr_5.0.2-1.ubuntu18.04+1_amd64.deb
+# apt-get install -y ./frr_5.0.2-1.ubuntu18.04+1_amd64.deb
+# rm ./frr_5.0.2-1.ubuntu18.04+1_amd64.deb
 sed -i 's/zebra=no/zebra=yes/g' /etc/frr/daemons
 sed -i 's/bgpd=no/bgpd=yes/g' /etc/frr/daemons
 systemctl restart frr
-/vagrant/update_rtr.sh
+# /vagrant/update_rtr.sh
 SHELL
 
 $install_ctrl = <<-SHELL
@@ -38,7 +38,7 @@ systemctl start gobgpd.service
 SHELL
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/bionic64"
+  config.vm.box = "debian/stretch64"
 
   config.vm.provider "virtualbox" do |vb|
     vb.gui = false
