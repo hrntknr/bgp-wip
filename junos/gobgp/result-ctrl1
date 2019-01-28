@@ -1,0 +1,8 @@
+hrntknr@ctrl1:~$ gobgp global rib
+   Network              Next Hop             AS_PATH              Age        Attrs
+*> 10.1.20.0/24         10.1.10.1            65002                00:09:25   [{Origin: i} {LocalPref: 100}]
+*> 10.1.23.0/24         10.1.10.1            65002                00:09:25   [{Origin: i} {LocalPref: 100}]
+*> 10.1.30.0/24         10.1.10.1            65002 65003          00:09:25   [{Origin: i} {LocalPref: 100}]
+hrntknr@ctrl1:~$ gobgp global rib -a ipv4-flowspec
+   Network                     Next Hop             AS_PATH              Age        Attrs
+*> [destination: 10.1.10.0/24] fictitious                                00:07:46   [{Origin: ?} {Extcomms: [discard]}]

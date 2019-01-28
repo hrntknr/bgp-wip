@@ -1,0 +1,69 @@
+set version 15.1X49-D160.2
+set system root-authentication encrypted-password ""
+set system login user hrntknr uid 2000
+set system login user hrntknr class super-user
+set system login user hrntknr authentication encrypted-password ""
+set system services ssh root-login deny
+set system services ssh protocol-version v2
+set system services web-management http interface fxp0.0
+set system syslog user * any emergency
+set system syslog file messages any any
+set system syslog file messages authorization info
+set system syslog file interactive-commands interactive-commands any
+set system license autoupdate url https://ae1.juniper.net/junos/key_retrieval
+set security log mode stream
+set security log report
+set security screen ids-option untrust-screen icmp ping-death
+set security screen ids-option untrust-screen ip source-route-option
+set security screen ids-option untrust-screen ip tear-drop
+set security screen ids-option untrust-screen tcp syn-flood alarm-threshold 1024
+set security screen ids-option untrust-screen tcp syn-flood attack-threshold 200
+set security screen ids-option untrust-screen tcp syn-flood source-threshold 1024
+set security screen ids-option untrust-screen tcp syn-flood destination-threshold 2048
+set security screen ids-option untrust-screen tcp syn-flood queue-size 2000
+set security screen ids-option untrust-screen tcp syn-flood timeout 20
+set security screen ids-option untrust-screen tcp land
+set security policies from-zone trust to-zone trust policy default-permit match source-address any
+set security policies from-zone trust to-zone trust policy default-permit match destination-address any
+set security policies from-zone trust to-zone trust policy default-permit match application any
+set security policies from-zone trust to-zone trust policy default-permit then permit
+set security policies from-zone trust to-zone untrust policy default-permit match source-address any
+set security policies from-zone trust to-zone untrust policy default-permit match destination-address any
+set security policies from-zone trust to-zone untrust policy default-permit match application any
+set security policies from-zone trust to-zone untrust policy default-permit then permit
+set security policies from-zone untrust to-zone trust policy default-permit match source-address any
+set security policies from-zone untrust to-zone trust policy default-permit match destination-address any
+set security policies from-zone untrust to-zone trust policy default-permit match application any
+set security policies from-zone untrust to-zone trust policy default-permit then permit
+set security policies from-zone untrust to-zone untrust policy default-permit match source-address any
+set security policies from-zone untrust to-zone untrust policy default-permit match destination-address any
+set security policies from-zone untrust to-zone untrust policy default-permit match application any
+set security policies from-zone untrust to-zone untrust policy default-permit then permit
+set security zones security-zone trust tcp-rst
+set security zones security-zone trust host-inbound-traffic system-services ping
+set security zones security-zone trust interfaces ge-0/0/3.0
+set security zones security-zone untrust screen untrust-screen
+set security zones security-zone untrust host-inbound-traffic system-services ping
+set security zones security-zone untrust host-inbound-traffic protocols bgp
+set security zones security-zone untrust interfaces ge-0/0/0.0
+set interfaces ge-0/0/0 unit 0 family inet address 10.1.12.1/24
+set interfaces ge-0/0/3 unit 0 family inet address 10.1.10.1/24
+set interfaces fxp0 unit 0 family inet address 10.0.0.41/16
+set routing-options router-id 10.1.10.1
+set routing-options autonomous-system 65001
+set protocols bgp group EXT type external
+set protocols bgp group EXT advertise-peer-as
+set protocols bgp group EXT family inet unicast
+set protocols bgp group EXT family inet flow
+set protocols bgp group EXT export adv
+set protocols bgp group EXT neighbor 10.1.12.2 peer-as 65002
+set protocols bgp group INT type internal
+set protocols bgp group INT family inet unicast
+set protocols bgp group INT family inet flow no-validate skip-validation
+set protocols bgp group INT export adv-int
+set protocols bgp group INT neighbor 10.1.10.2
+set policy-options policy-statement adv term 0 then accept
+set policy-options policy-statement adv-int term 1 then next-hop self
+set policy-options policy-statement adv-int from protocol bgp
+set policy-options policy-statement skip-validation then accept
+

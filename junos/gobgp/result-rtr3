@@ -1,0 +1,40 @@
+hrntknr> show route
+
+inet.0: 9 destinations, 11 routes (9 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+10.0.0.0/16        *[Direct/0] 03:17:23
+                    > via fxp0.0
+                    [BGP/170] 00:27:38, localpref 100
+                      AS path: 65002 I, validation-state: unverified
+                    > to 10.1.23.2 via ge-0/0/1.0
+10.0.0.43/32       *[Local/0] 03:17:23
+                      Local via fxp0.0
+10.1.10.0/24       *[BGP/170] 00:27:38, localpref 100
+                      AS path: 65002 65001 I, validation-state: unverified
+                    > to 10.1.23.2 via ge-0/0/1.0
+10.1.12.0/24       *[BGP/170] 00:27:38, localpref 100
+                      AS path: 65002 I, validation-state: unverified
+                    > to 10.1.23.2 via ge-0/0/1.0
+10.1.20.0/24       *[BGP/170] 00:27:38, localpref 100
+                      AS path: 65002 I, validation-state: unverified
+                    > to 10.1.23.2 via ge-0/0/1.0
+10.1.23.0/24       *[Direct/0] 03:16:42
+                    > via ge-0/0/1.0
+                    [BGP/170] 00:27:38, localpref 100
+                      AS path: 65002 I, validation-state: unverified
+                    > to 10.1.23.2 via ge-0/0/1.0
+10.1.23.3/32       *[Local/0] 03:16:43
+                      Local via ge-0/0/1.0
+10.1.30.0/24       *[Direct/0] 03:16:41
+                    > via ge-0/0/3.0
+10.1.30.1/32       *[Local/0] 03:16:43
+                      Local via ge-0/0/3.0
+
+inetflow.0: 1 destinations, 1 routes (1 active, 0 holddown, 0 hidden)
++ = Active Route, - = Last Active, * = Both
+
+10.1.10/24,*/term:1
+                   *[BGP/170] 00:04:41, localpref 100, from 10.1.23.2
+                      AS path: 65002 65001 ?, validation-state: unverified
+                      Fictitious
