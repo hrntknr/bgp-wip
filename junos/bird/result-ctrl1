@@ -1,0 +1,8 @@
+bird> show route
+Table master4:
+10.1.30.0/24         unreachable [bgp1 21:44:14.995 from 10.1.10.1] * (100/-) [AS65003i]
+10.1.20.0/24         unreachable [bgp1 21:44:14.995 from 10.1.10.1] * (100/-) [AS65002i]
+10.1.23.0/24         unreachable [bgp1 21:44:14.995 from 10.1.10.1] * (100/-) [AS65002i]
+
+Table flowta4:
+flow4 { dst 10.1.10.0/24; }  [static1 21:43:42.987] * (200)
