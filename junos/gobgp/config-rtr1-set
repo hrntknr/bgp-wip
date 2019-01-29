@@ -6,4 +6,3 @@ set protocols bgp group INT neighbor 10.1.10.2
 set policy-options policy-statement adv-int term 1 then next-hop self
 set policy-options policy-statement adv-int from protocol bgp
 set policy-options policy-statement skip-validation then accept
-
