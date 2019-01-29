@@ -1,0 +1,2 @@
+delete routing-options flow route flow1 match
+set routing-options flow route flow1 match destination 10.0.0.0/16
