@@ -1,14 +1,14 @@
 version 15.1X49-D160.2;
 system {
     root-authentication {
-        encrypted-password "$5$yr0SWxiE$LemsiQVR47m0f.VkFNmllHhRBpTGZAuzVJnn7VNHtKB"; ## SECRET-DATA
+        encrypted-password ""; ## SECRET-DATA
     }
     login {
         user hrntknr {
             uid 2000;
             class super-user;
             authentication {
-                encrypted-password "$5$aMBCdBaZ$j84PNtR9RCapKswCUVQiN4LGv85OSjCIOLt9rMmM3.5"; ## SECRET-DATA
+                encrypted-password ""; ## SECRET-DATA
             }
         }
     }

@@ -1,8 +1,8 @@
 set version 15.1X49-D160.2
-set system root-authentication encrypted-password "$5$yr0SWxiE$LemsiQVR47m0f.VkFNmllHhRBpTGZAuzVJnn7VNHtKB"
+set system root-authentication encrypted-password ""
 set system login user hrntknr uid 2000
 set system login user hrntknr class super-user
-set system login user hrntknr authentication encrypted-password "$5$aMBCdBaZ$j84PNtR9RCapKswCUVQiN4LGv85OSjCIOLt9rMmM3.5"
+set system login user hrntknr authentication encrypted-password ""
 set system services ssh root-login deny
 set system services ssh protocol-version v2
 set system services web-management http interface fxp0.0
