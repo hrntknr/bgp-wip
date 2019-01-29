@@ -187,17 +187,6 @@ protocols {
                 peer-as 65002;
             }
         }
-        group INT {
-            type internal;
-            family inet {
-                unicast;
-                flow {
-                    no-validate skip-validation;
-                }
-            }
-            export adv-int;
-            neighbor 10.1.10.2;
-        }
     }
 }
 policy-options {
@@ -205,17 +194,6 @@ policy-options {
         term 0 {
             then accept;
         }
-    }
-    policy-statement adv-int {
-        term 1 {
-            then {
-                next-hop self;
-            }
-        }
-        from protocol bgp;
-    }
-    policy-statement skip-validation {
-        then accept;
     }
 }
 
