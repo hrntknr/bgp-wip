@@ -1,0 +1,26 @@
+!
+frr version 6.0.2
+frr defaults traditional
+hostname rtr1
+log syslog informational
+no ipv6 forwarding
+service integrated-vtysh-config
+!
+router bgp 65001
+ bgp router-id 10.1.10.1
+ neighbor 10.1.10.2 remote-as 65001
+ neighbor 10.1.12.2 remote-as 65002
+ !
+ address-family ipv4 unicast
+  redistribute connected
+  neighbor 10.1.10.2 next-hop-self
+ exit-address-family
+ !
+ address-family ipv4 flowspec
+  neighbor 10.1.10.2 activate
+  neighbor 10.1.12.2 activate
+ exit-address-family
+!
+line vty
+!
+end

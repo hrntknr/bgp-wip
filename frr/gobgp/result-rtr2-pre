@@ -1,0 +1,39 @@
+rtr2# show ip route
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, D - SHARP,
+       F - PBR,
+       > - selected route, * - FIB route
+
+K>* 0.0.0.0/0 [0/0] via 10.0.2.2, eth0, 05:51:35
+C>* 10.0.2.0/24 is directly connected, eth0, 05:51:35
+B>* 10.1.10.0/24 [20/0] via 10.1.12.1, eth1, 01:58:43
+C>* 10.1.12.0/24 is directly connected, eth1, 05:51:35
+C>* 10.1.20.0/24 is directly connected, eth3, 05:51:35
+C>* 10.1.23.0/24 is directly connected, eth2, 05:51:35
+B>* 10.1.30.0/24 [20/0] via 10.1.23.2, eth2, 02:01:48
+rtr2# show bgp summary
+
+IPv4 Unicast Summary:
+BGP router identifier 10.1.20.1, local AS number 65002 vrf-id 0
+BGP table version 14
+RIB entries 11, using 1760 bytes of memory
+Peers 2, using 41 KiB of memory
+
+Neighbor        V         AS MsgRcvd MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd
+10.1.12.1       4      65001     196     282        0    0    0 01:58:47            3
+10.1.23.2       4      65003     143     146        0    0    0 02:01:51            3
+
+Total number of neighbors 2
+
+IPv4 Flowspec Summary:
+BGP router identifier 10.1.20.1, local AS number 65002 vrf-id 0
+BGP table version 0
+RIB entries 0, using 0 bytes of memory
+Peers 2, using 41 KiB of memory
+
+Neighbor        V         AS MsgRcvd MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd
+10.1.12.1       4      65001     196     282        0    0    0 01:58:47            0
+10.1.23.2       4      65003     143     146        0    0    0 02:01:51            0
+
+Total number of neighbors 2

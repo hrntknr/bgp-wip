@@ -1,0 +1,19 @@
+2019/01/29 19:31:02 BGP: bgp_process_packet: BGP OPEN receipt failed for peer: 10.1.12.2
+2019/01/29 19:31:05 BGP: Can't get remote address and port: Transport endpoint is not connected
+2019/01/29 19:31:05 BGP: %bgp_getsockname() failed for accept from_peer 10.1.12.2 fd 21 (peer fd 26)
+2019/01/29 19:31:06 BGP: bgp_process_packet: BGP OPEN receipt failed for peer: 10.1.12.2
+2019/01/29 19:31:06 BGP: 10.1.12.2 [Error] bgp_read_packet error: Connection reset by peer
+2019/01/29 19:31:09 BGP: bgp_process_packet: BGP OPEN receipt failed for peer: 10.1.12.2
+2019/01/29 19:31:16 BGP: bgp_process_packet: BGP OPEN receipt failed for peer: 10.1.12.2
+2019/01/29 19:31:23 BGP: Can't get remote address and port: Transport endpoint is not connected
+2019/01/29 19:31:23 BGP: %bgp_getsockname() failed for accept from_peer 10.1.12.2 fd 21 (peer fd 26)
+2019/01/29 19:31:28 BGP: bgp_process_packet: BGP OPEN receipt failed for peer: 10.1.12.2
+2019/01/29 19:31:39 BGP: Can't get remote address and port: Transport endpoint is not connected
+2019/01/29 19:31:39 BGP: %bgp_getsockname() failed for accept from_peer 10.1.12.2 fd 21 (peer fd 26)
+2019/01/29 19:31:40 BGP: bgp_process_packet: BGP OPEN receipt failed for peer: 10.1.12.2
+2019/01/29 19:31:43 BGP: bgp_process_packet: BGP OPEN receipt failed for peer: 10.1.12.2
+2019/01/29 19:31:46 BGP: bgp_process_packet: BGP OPEN receipt failed for peer: 10.1.12.2
+2019/01/29 19:31:54 BGP: bgp_process_packet: BGP OPEN receipt failed for peer: 10.1.12.2
+2019/01/29 19:32:03 BGP: bgp_process_packet: BGP OPEN receipt failed for peer: 10.1.12.2
+2019/01/29 19:32:17 BGP: Can't get remote address and port: Transport endpoint is not connected
+2019/01/29 19:32:17 BGP: %bgp_getsockname() failed for accept from_peer 10.1.12.2 fd 21 (peer fd 26)

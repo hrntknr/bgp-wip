@@ -1,0 +1,8 @@
+vagrant@ctrl1:~$ gobgp global rib
+   Network              Next Hop             AS_PATH              Age        Attrs
+*> 10.0.2.0/24          10.1.10.1                                 01:59:34   [{Origin: ?} {Med: 0} {LocalPref: 100}]
+*> 10.1.10.0/24         10.1.10.1                                 01:59:34   [{Origin: ?} {Med: 0} {LocalPref: 100}]
+*> 10.1.12.0/24         10.1.10.1                                 01:59:34   [{Origin: ?} {Med: 0} {LocalPref: 100}]
+*> 10.1.20.0/24         10.1.10.1            65002                01:59:34   [{Origin: ?} {Med: 0} {LocalPref: 100}]
+*> 10.1.23.0/24         10.1.10.1            65002                01:59:34   [{Origin: ?} {Med: 0} {LocalPref: 100}]
+*> 10.1.30.0/24         10.1.10.1            65002 65003          01:59:34   [{Origin: ?} {LocalPref: 100}]

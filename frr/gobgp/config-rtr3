@@ -1,0 +1,22 @@
+!
+frr version 6.0.2
+frr defaults traditional
+hostname rtr3
+log syslog informational
+no ipv6 forwarding
+service integrated-vtysh-config
+!
+router bgp 65003
+ bgp router-id 10.1.30.1
+ neighbor 10.1.23.1 remote-as 65002
+ !
+ address-family ipv4 unicast
+  redistribute connected
+ exit-address-family
+ !
+ address-family ipv4 flowspec
+  neighbor 10.1.23.1 activate
+ exit-address-family
+!
+line vty
+!

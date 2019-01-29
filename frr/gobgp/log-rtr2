@@ -1,0 +1,44 @@
+2019/01/29 19:31:02 BGP: bgp_process_packet: BGP OPEN receipt failed for peer: 10.1.12.1
+2019/01/29 19:31:03 BGP: 10.1.12.1 sent non-zero value, 2, for defunct SNPA-length field
+2019/01/29 19:31:03 BGP: Flowspec NLRI length inconsistent ( size 2 seen)
+2019/01/29 19:31:03 BGP: 10.1.12.1 [Error] Error parsing NLRI
+2019/01/29 19:31:03 BGP: bgp_process_packet: BGP UPDATE receipt failed for peer: 10.1.12.1
+2019/01/29 19:31:07 BGP: 10.1.12.1 sent non-zero value, 2, for defunct SNPA-length field
+2019/01/29 19:31:07 BGP: Flowspec NLRI length inconsistent ( size 2 seen)
+2019/01/29 19:31:07 BGP: 10.1.12.1 [Error] Error parsing NLRI
+2019/01/29 19:31:07 BGP: bgp_process_packet: BGP UPDATE receipt failed for peer: 10.1.12.1
+2019/01/29 19:31:09 BGP: bgp_process_packet: BGP OPEN receipt failed for peer: 10.1.12.1
+2019/01/29 19:31:10 BGP: 10.1.12.1 sent non-zero value, 2, for defunct SNPA-length field
+2019/01/29 19:31:10 BGP: Flowspec NLRI length inconsistent ( size 2 seen)
+2019/01/29 19:31:10 BGP: 10.1.12.1 [Error] Error parsing NLRI
+2019/01/29 19:31:10 BGP: bgp_process_packet: BGP UPDATE receipt failed for peer: 10.1.12.1
+2019/01/29 19:31:14 BGP: 10.1.12.1 sent non-zero value, 2, for defunct SNPA-length field
+2019/01/29 19:31:14 BGP: Flowspec NLRI length inconsistent ( size 2 seen)
+2019/01/29 19:31:14 BGP: 10.1.12.1 [Error] Error parsing NLRI
+2019/01/29 19:31:14 BGP: bgp_process_packet: BGP UPDATE receipt failed for peer: 10.1.12.1
+2019/01/29 19:31:16 BGP: bgp_process_packet: BGP OPEN receipt failed for peer: 10.1.12.1
+2019/01/29 19:31:17 BGP: 10.1.12.1 sent non-zero value, 2, for defunct SNPA-length field
+2019/01/29 19:31:17 BGP: Flowspec NLRI length inconsistent ( size 2 seen)
+2019/01/29 19:31:17 BGP: 10.1.12.1 [Error] Error parsing NLRI
+2019/01/29 19:31:17 BGP: bgp_process_packet: BGP UPDATE receipt failed for peer: 10.1.12.1
+2019/01/29 19:31:19 BGP: bgp_process_packet: BGP OPEN receipt failed for peer: 10.1.12.1
+2019/01/29 19:31:21 BGP: 10.1.12.1 sent non-zero value, 2, for defunct SNPA-length field
+2019/01/29 19:31:21 BGP: Flowspec NLRI length inconsistent ( size 2 seen)
+2019/01/29 19:31:21 BGP: 10.1.12.1 [Error] Error parsing NLRI
+2019/01/29 19:31:21 BGP: bgp_process_packet: BGP UPDATE receipt failed for peer: 10.1.12.1
+2019/01/29 19:31:25 BGP: 10.1.12.1 [Error] bgp_read_packet error: Connection reset by peer
+2019/01/29 19:31:26 BGP: 10.1.12.1 sent non-zero value, 2, for defunct SNPA-length field
+2019/01/29 19:31:26 BGP: Flowspec NLRI length inconsistent ( size 2 seen)
+2019/01/29 19:31:26 BGP: 10.1.12.1 [Error] Error parsing NLRI
+2019/01/29 19:31:26 BGP: bgp_process_packet: BGP UPDATE receipt failed for peer: 10.1.12.1
+2019/01/29 19:31:28 BGP: bgp_process_packet: BGP OPEN receipt failed for peer: 10.1.12.1
+2019/01/29 19:31:30 BGP: 10.1.12.1 sent non-zero value, 2, for defunct SNPA-length field
+2019/01/29 19:31:30 BGP: Flowspec NLRI length inconsistent ( size 2 seen)
+2019/01/29 19:31:30 BGP: 10.1.12.1 [Error] Error parsing NLRI
+2019/01/29 19:31:30 BGP: bgp_process_packet: BGP UPDATE receipt failed for peer: 10.1.12.1
+2019/01/29 19:31:32 BGP: bgp_process_packet: BGP OPEN receipt failed for peer: 10.1.12.1
+2019/01/29 19:31:34 BGP: 10.1.12.1 sent non-zero value, 2, for defunct SNPA-length field
+2019/01/29 19:31:34 BGP: Flowspec NLRI length inconsistent ( size 2 seen)
+2019/01/29 19:31:34 BGP: 10.1.12.1 [Error] Error parsing NLRI
+2019/01/29 19:31:34 BGP: bgp_process_packet: BGP UPDATE receipt failed for peer: 10.1.12.1
+2019/01/29 19:31:36 BGP: bgp_process_packet: BGP OPEN receipt failed for peer: 10.1.12.1
