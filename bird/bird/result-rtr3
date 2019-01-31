@@ -1,0 +1,21 @@
+bird> show route
+Table master4:
+10.1.10.0/24         unicast [bgp1 13:26:20.456] * (100) [AS65001i]
+        via 10.1.23.1 on eth1
+10.1.30.0/24         unicast [direct1 12:05:22.705] * (240)
+        dev eth2
+10.1.20.0/24         unicast [bgp1 13:26:20.456] * (100) [AS65002i]
+        via 10.1.23.1 on eth1
+10.1.23.0/24         unicast [direct1 12:05:22.705] * (240)
+        dev eth1
+                     unicast [bgp1 13:26:20.456] (100) [AS65002i]
+        via 10.1.23.1 on eth1
+10.1.12.0/24         unicast [bgp1 13:26:20.456] * (100) [AS65002i]
+        via 10.1.23.1 on eth1
+10.0.2.0/24          unicast [direct1 12:05:22.705] * (240)
+        dev eth0
+                     unicast [bgp1 13:26:20.456] (100) [AS65002i]
+        via 10.1.23.1 on eth1
+
+Table flowta4:
+flow4 { dst 10.1.10.0/24; }  [bgp1 13:26:20.456 from 10.1.23.1] * (100) [AS65001i]

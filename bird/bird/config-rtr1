@@ -1,0 +1,42 @@
+log syslog all;
+router id 10.1.10.1;
+
+protocol device {
+  scan time 10;
+}
+
+protocol direct {
+  ipv4 {
+    import all;
+  };
+}
+
+protocol kernel {
+  ipv4 {
+    export all;
+  };
+}
+
+flow4 table flowta4;
+
+protocol static {
+  flow4;
+  route flow4 {
+    dst 10.1.10.0/24;
+  } {
+    bgp_ext_community.add((generic, 0x80060000, 0x00000000));
+  };
+}
+
+protocol bgp {
+  local as 65001;
+  neighbor 10.1.12.2 as 65002;
+  ipv4 {
+    import all;
+    export all;
+  };
+  flow4 {
+    import all;
+    export all;
+  };
+}
