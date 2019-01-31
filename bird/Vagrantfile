@@ -2,6 +2,9 @@
 # vi: set ft=ruby :
 
 $install_rtr = <<-SHELL
+apt-get update
+apt-get install -y wget build-essential flex bison libncurses5-dev libreadline-dev
+
 wget -q ftp://bird.network.cz/pub/bird/bird-2.0.3.tar.gz
 tar -zxf bird-2.0.3.tar.gz
 (
