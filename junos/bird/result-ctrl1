@@ -1,8 +1,14 @@
-bird> show route
 Table master4:
-10.1.30.0/24         unreachable [bgp1 21:44:14.995 from 10.1.10.1] * (100/-) [AS65003i]
-10.1.20.0/24         unreachable [bgp1 21:44:14.995 from 10.1.10.1] * (100/-) [AS65002i]
-10.1.23.0/24         unreachable [bgp1 21:44:14.995 from 10.1.10.1] * (100/-) [AS65002i]
+10.1.10.0/24         unicast [direct1 19:55:32.887] * (240)
+	dev ens192
+10.1.30.0/24         unicast [bgp1 19:56:05.225] * (100/0) [AS65003i]
+	via 10.1.10.1 on ens192
+10.1.20.0/24         unicast [bgp1 19:56:05.225] * (100/0) [AS65002i]
+	via 10.1.10.1 on ens192
+10.1.23.0/24         unicast [bgp1 19:56:05.225] * (100/0) [AS65002i]
+	via 10.1.10.1 on ens192
+10.0.0.0/16          unicast [direct1 19:55:32.887] * (240)
+	dev ens224
 
 Table flowta4:
-flow4 { dst 10.1.10.0/24; }  [static1 21:43:42.987] * (200)
+flow4 { dst 10.1.10.0/24; }  [static1 19:55:32.884] * (200)
