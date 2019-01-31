@@ -1,0 +1,47 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+$install_rtr = <<-SHELL
+wget -q ftp://bird.network.cz/pub/bird/bird-2.0.3.tar.gz
+tar -zxf bird-2.0.3.tar.gz
+(
+  cd bird-2.0.3
+  ./configure
+  make
+  make install
+)
+rm bird-2.0.3.tar.gz
+rm -r bird-2.0.3
+cp /vagrant/bird.service /lib/systemd/system/bird.service
+systemctl daemon-reload
+SHELL
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "debian/stretch64"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = false
+    vb.memory = 1024
+    vb.cpus = 2
+    vb.customize ["modifyvm", :id, "--audio", "none"]
+  end
+  config.vm.define "rtr1" do |rtr|
+    config.vm.hostname = "rtr1"
+    rtr.vm.network "private_network", ip: "10.1.12.1", virtualbox__intnet: "net12"
+    rtr.vm.network "private_network", ip: "10.1.10.1", virtualbox__intnet: "internal1"
+    rtr.vm.provision "shell", inline: $install_rtr
+  end
+  config.vm.define "rtr2" do |rtr|
+    config.vm.hostname = "rtr2"
+    rtr.vm.network "private_network", ip: "10.1.12.2", virtualbox__intnet: "net12"
+    rtr.vm.network "private_network", ip: "10.1.23.1", virtualbox__intnet: "net23"
+    rtr.vm.network "private_network", ip: "10.1.20.1", virtualbox__intnet: "internal2"
+    rtr.vm.provision "shell", inline: $install_rtr
+  end
+  config.vm.define "rtr3" do |rtr|
+    config.vm.hostname = "rtr3"
+    rtr.vm.network "private_network", ip: "10.1.23.2", virtualbox__intnet: "net23"
+    rtr.vm.network "private_network", ip: "10.1.30.1", virtualbox__intnet: "internal3"
+    rtr.vm.provision "shell", inline: $install_rtr
+  end
+end
